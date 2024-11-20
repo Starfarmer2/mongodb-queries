@@ -33,5 +33,10 @@ printjson(db.people.aggregate([
         ]
       }
     }
+  },
+  {
+    $project: {
+      type: "$type.type"
+    }
   }
 ]).toArray());
