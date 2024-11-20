@@ -1,4 +1,4 @@
-db.people.aggregate([
+printjson(db.people.aggregate([
     // Filter for current Democrat legislators in NY
     {
       $match: {
@@ -21,5 +21,5 @@ db.people.aggregate([
         }
       }
     }
-  ]);
+  ]).toArray());
   
