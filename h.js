@@ -37,7 +37,15 @@ printjson(db.committees.aggregate([
             as: "chair"
         }
     },
-    
+    {
+        $project: {
+            chair_person: { $arrayElemAt: ["$chair_person", 0]}
+        }
+    },
+    {
+        $replaceRoot: {newRoot: "$chair_person"}
+    }
+
 
 
     // {
