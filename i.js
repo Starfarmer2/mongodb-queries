@@ -9,7 +9,7 @@ printjson(db.committees.aggregate([
     },
     {
       $project: {
-        committee: "$committee_name",
+        committee: "$displayname",
         members: {
           $filter: {
             input: "$member_details",
@@ -60,6 +60,6 @@ printjson(db.committees.aggregate([
           count: { $sum: 1 }
         }
       },
-      
+
   ]).toArray());
   
