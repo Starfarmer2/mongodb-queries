@@ -1,1 +1,1 @@
-printjson(db.people.find({"name": "/John /"}).toArray());
+printjson(db.people.find({"name": /John /}).toArray());
