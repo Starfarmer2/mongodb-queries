@@ -45,16 +45,4 @@ printjson(db.committees.aggregate([
     {
         $replaceRoot: {newRoot: "$chair"}
     }
-
-
-
-
-    // {
-
-    // },
-    // {
-    //     $project: {
-    //         _id: 1
-    //     }
-    // }
 ]).toArray());
