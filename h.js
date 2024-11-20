@@ -13,8 +13,9 @@ printjson(db.committees.aggregate([
         }
     },
     {
-        $unwind: "subcommittees.members"
+        $unwind: "$subcommittees.members"
     },
+
 
     // {
 
