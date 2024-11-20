@@ -19,6 +19,15 @@ printjson(db.committees.aggregate([
         $match: {
             "subcommittees.members.role": "Chair"
         }
+    },
+    {
+        $project: {
+            subcommittees: {
+                members: {
+                    id: 1
+                }
+            }
+        }
     }
 
 
