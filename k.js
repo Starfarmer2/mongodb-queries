@@ -1,24 +1,56 @@
-printjs(db.people.aggregate([
-    // Step 1: Filter for female legislators currently serving California
+printjson(db.people.aggregate([
+    // Step 1: Filter female legislators currently serving in California
     {
       $match: {
         gender: "F", // Female legislators
         "roles.current": 1, // Currently serving
-        "roles.state": "CA" // State is California
+        "roles.state": "CA" // Serving California
       }
     },
-    // Step 2: Filter out those serving in any committee or subcommittee
+    // Step 2: Perform a lookup to find their committee and subcommittee assignments
+    {
+      $lookup: {
+        from: "committees",
+        localField: "_id", // Match legislator ID in people with members.id in committees
+        foreignField: "members.id",
+        as: "committee_info"
+      }
+    },
+    // Step 3: Check for subcommittees and members in them
+    {
+      $addFields: {
+        subcommittee_members: {
+          $reduce: {
+            input: "$committee_info.subcommittees",
+            initialValue: [],
+            in: { $concatArrays: ["$$value", "$$this.members"] }
+          }
+        }
+      }
+    },
+    // Step 4: Combine main committee members and subcommittee members
+    {
+      $addFields: {
+        all_committee_members: {
+          $concatArrays: [
+            { $arrayElemAt: ["$committee_info.members", 0] }, // Main committee members
+            "$subcommittee_members" // Subcommittee members
+          ]
+        }
+      }
+    },
+    // Step 5: Exclude legislators assigned to any committees or subcommittees
     {
       $match: {
-        "roles.committees": { $exists: false }, // No committees assigned
-        "roles.subcommittees": { $exists: false } // No subcommittees assigned
+        all_committee_members: { $not: { $elemMatch: { id: "$_id" } } }
       }
     },
-    // Step 3: Project only the name field in the required format
+    // Step 6: Project the result in the required format
     {
       $project: {
         _id: 0, // Exclude _id from the output
-        name: "$name"
+        name: "$name" // Include only the name field
       }
     }
   ]).toArray());
+  
