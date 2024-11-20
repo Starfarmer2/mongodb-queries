@@ -29,5 +29,22 @@ printjson(db.committees.aggregate([
         }
       }
     },
+    { $unwind: "$members" },
+    {
+        $addFields: {
+            party: {
+              $arrayElemAt: [
+                {
+                  $filter: {
+                    input: "$members.roles",
+                    as: "role",
+                    cond: { $eq: ["$$role.current", 1] }
+                  }
+                },
+                0
+              ]
+            }
+          }
+    }
   ]).toArray());
   
