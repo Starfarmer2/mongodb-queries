@@ -1,12 +1,16 @@
 printjson(db.committees.aggregate([
     {
         $match: {
-            _id: "HSED"
+            _id: "HSED",
+            "subcommittees.displayname": "Higher Education and Workforce Development"
         }
     },
-    {
-        $project: {
-            _id: 1
-        }
-    }
+    // {
+
+    // },
+    // {
+    //     $project: {
+    //         _id: 1
+    //     }
+    // }
 ]).toArray());
