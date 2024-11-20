@@ -17,7 +17,7 @@ printjson(db.committees.aggregate([
     },
     {
         $match: {
-            "subcommittees.members.role": "Chairman"
+            "subcommittees.members.role": "Chair"
         }
     }
 
