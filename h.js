@@ -15,6 +15,11 @@ printjson(db.committees.aggregate([
     {
         $unwind: "$subcommittees.members"
     },
+    {
+        $match: {
+            "subcommittees.members.role": "Chairman"
+        }
+    }
 
 
     // {
