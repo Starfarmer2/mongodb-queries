@@ -45,6 +45,11 @@ printjson(db.committees.aggregate([
               ]
             }
           }
-    }
+    },
+    {
+        $addFields: {
+          party: "$party.party"
+        }
+    },
   ]).toArray());
   
