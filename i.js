@@ -59,7 +59,37 @@ printjson(db.committees.aggregate([
           },
           count: { $sum: 1 }
         }
+    },
+
+    {
+        $group: {
+          _id: "$_id.committee",
+          Democrat: {
+            $sum: {
+              $cond: [{ $eq: ["$_id.party", "Democrat"] }, "$count", 0]
+            }
+          },
+          Republican: {
+            $sum: {
+              $cond: [{ $eq: ["$_id.party", "Republican"] }, "$count", 0]
+            }
+          },
+          Independent: {
+            $sum: {
+              $cond: [{ $eq: ["$_id.party", "Independent"] }, "$count", 0]
+            }
+          }
+        }
       },
+      {
+        $project: {
+          _id: 0,
+          committee: "$_id",
+          Democrat: 1,
+          Republican: 1,
+          Independent: 1
+        }
+      }
 
   ]).toArray());
   
