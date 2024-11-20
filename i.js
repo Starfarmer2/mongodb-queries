@@ -9,7 +9,7 @@ printjson(db.committees.aggregate([
     },
     {
       $project: {
-        committee: "$displayname",
+        committee: "$_id",
         members: {
           $filter: {
             input: "$member_details",
