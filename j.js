@@ -36,6 +36,10 @@ printjson(db.people.aggregate([
   },
   {
     $project: {
+      _id: 0,
+      name: 1,
+      gender: 1,
+      age: 1,
       type: "$type.type"
     }
   }
