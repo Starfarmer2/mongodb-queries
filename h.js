@@ -1,6 +1,7 @@
-printjson(db.people.aggregate([
+printjson(db.committees.aggregate([
     {
         $match: {
+            _id: "HSED"
         }
     },
     {
