@@ -51,5 +51,15 @@ printjson(db.committees.aggregate([
           party: "$party.party"
         }
     },
+    {
+        $group: {
+          _id: {
+            committee: "$committee",
+            party: "$party"
+          },
+          count: { $sum: 1 }
+        }
+      },
+      
   ]).toArray());
   
