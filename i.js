@@ -1,4 +1,4 @@
-db.committees.aggregate([
+printjson(db.committees.aggregate([
     {
       $lookup: {
         from: "people",
@@ -7,6 +7,27 @@ db.committees.aggregate([
         as: "member_details"
       }
     },
-
-  ]);
+    {
+      $project: {
+        committee: "$committee_name",
+        members: {
+          $filter: {
+            input: "$member_details",
+            as: "member",
+            cond: {
+              $eq: [
+                {
+                  $arrayElemAt: [
+                    "$$member.roles.current",
+                    0
+                  ]
+                },
+                1
+              ]
+            }
+          }
+        }
+      }
+    },
+  ]).toArray());
   
