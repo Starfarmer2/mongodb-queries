@@ -28,7 +28,16 @@ printjson(db.committees.aggregate([
                 }
             }
         }
-    }
+    },
+    {
+        $lookup: {
+            from: "people",
+            localField: "subcommittees.members.id",
+            foreignField: "_id",
+            as: "chair"
+        }
+    },
+    
 
 
     // {
